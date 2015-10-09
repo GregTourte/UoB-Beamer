@@ -1,0 +1,6 @@
+- make generic school of geographical sciences theme (without BRIDGE logo and the green colour palette)
+- make generic university of Bristol theme (without BRIDGE logo and the blue/Red colour palette)
+- support wide screen aspect ratios
+- make background curves using tikz/pgf instead of externally created pdfs to allow colour palette change
+- write documentation
+- use full UoB logo instead of the text only one
