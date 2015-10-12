@@ -2,7 +2,7 @@
 
 This is a LaTeX beamer theme for the University of Bristol.
 
-This is a modification of nschloe/ua-beamer.
+This is a modification of [nschloe/ua-beamer](https://www.github.com/nschloe/ua-beamer).
 
 It is currently mainly for use for the BRIDGE research group of the School of
 Geographical Sciences but will be extended to be more generic with options for
