@@ -3,4 +3,4 @@
 - support wide screen aspect ratios
 - make background curves using tikz/pgf instead of externally created pdfs to allow colour palette change
 - write documentation
-- use full UoB logo instead of the text only one
+- use full UoB logo instead of the text only one - DONE!

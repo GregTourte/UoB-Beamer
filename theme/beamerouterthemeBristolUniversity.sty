@@ -59,6 +59,7 @@
 \newlength{\textlogoheight}
 \setlength{\textlogoheight}{0.37218461538461539cm}% 0.36in* 64/127 *2.54cm/in * 42px/52px
 \pgfdeclareimage[height=\textlogoheight]{uTextColor}{University_of_BRISTOL}
+\pgfdeclareimage[height=\ulogoheight]{uLogoWhite}{UoB_Logo_white}
 
 \ifthenelse{ \boolean{beamer@dark} \OR \boolean{beamer@darktitle} }
 % then
@@ -79,7 +80,7 @@
 % *** END DEFINE IMAGES <<<
 % ----------------------------------------------------------------------------
 
-
+\setbeamertemplate{navigation symbols}{}
 
 % ----------------------------------------------------------------------------
 % *** HEADLINE <<<
@@ -111,7 +112,8 @@
     \hskip\margin%
     \ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }
     {%
-      \vskip5cm% TODO: get rid of this quirk
+    %  \vskip5cm% TODO: get rid of this quirk
+      \pgfuseimage{uLogoWhite}%
     }
     {%
       \pgfuseimage{ULogo}%
@@ -203,7 +205,7 @@
   \ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }
   % *** THEN *** dark footline
   {%
-    \pgftext[left,bottom,at=\uTextColorPosDark]{\pgfuseimage{uTextColor}}%
+    %\pgftext[left,bottom,at=\uTextColorPosDark]{\pgfuseimage{uTextColor}}%
     \pgftext[right,bottom,at=\posUlogoFoot]{\pgfuseimage{ULogo}}%
   }
   % *** ELSE *** light footline
