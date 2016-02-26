@@ -138,7 +138,7 @@
 
 \ifbeamer@dark\else%
   \newlength{\frametitlewidth}
-  \setlength{\frametitlewidth}{\textwidth-\ulogowidth-\ulogopadding}
+  \setlength{\frametitlewidth}{\textwidth-2.5\ulogoheight-\ulogopadding}
 \fi
 
 \defbeamertemplate*{frametitle}{uob theme}
@@ -154,11 +154,11 @@
       \vskip-\ulogoheight%
       \vbox to \ulogoheight{%
         \vfil%
-        \leftskip=\ulogowidth%
+        \leftskip=2\ulogowidth%
         \advance\leftskip by\ulogopadding%
         % TODO To date (July 4, 2010), the beamer class cannot deal with actual
         %      variables as arguments to "right". Hence, use the literal.
-        \begin{beamercolorbox}[right=1.1136cm]{frame title}%
+        \begin{beamercolorbox}[right=1.81cm]{frame title}%
         \hfill\insertframetitle\par%
         \end{beamercolorbox}%
         \vfil%
