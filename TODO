@@ -4,5 +4,5 @@
 - make background curves using tikz/pgf instead of externally created pdfs to allow colour palette change
 - write documentation
 - use full UoB logo instead of the text only one - DONE!
-- add date field in title frame - DONE!
+- add date field in title frame
 - reduce textheight in frame to take into account the footer decorations
