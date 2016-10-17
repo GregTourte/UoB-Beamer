@@ -1,20 +1,54 @@
-% Copyright 2009 by Nico Schlömer
-%
-% This file may be distributed and/or modified
-%
-% 1. under the LaTeX Project Public License and/or
-% 2. under the GNU Public License.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerfontthemeBristolUniversity}[2016/10/14 University of Bristol font theme]
+\RequirePackage{etoolbox}
+\RequirePackage{ifxetex}
+\RequirePackage{ifluatex}
+\RequirePackage{pgfopts}
+\ifboolexpr{bool {xetex} or bool {luatex}}{
+  \RequirePackage[no-math]{fontspec}
+  \RequirePackage{polyglossia}
+  \newcounter{fontsnotfound}
+  \usefonttheme{professionalfonts}
+  \defaultfontfeatures{Ligatures=TeX, Numbers=Lining}
+  \setmainfont{Linux Libertine O}
+  \setsansfont{Linux Biolinum O}[]
+  \setmonofont{Inconsolata ZI4}[ItalicFont = *, ItalicFeatures = FakeSlant, RawFeature = -tlig;-trep, StylisticSet={1,3}, Scale=MatchLowercase]
+  \RequirePackage[italic]{mathastext}
+}{ %not fontspec
+\RequirePackage[english]{babel}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
 
-\mode<presentation>
+\RequirePackage{Libertine}
+\RequirePackage{Inconsolata}
+}
 
-\setbeamerfont{title}     {size=\huge}
-\setbeamerfont{subtitle}  {size=\Large}
-\setbeamerfont{frametitle}{size=\LARGE}
-
-\setbeamerfont{author}{size=\normalsize}
-
-\setbeamerfont{frame number in head}{size=\scriptsize}
-\setbeamerfont{frame number in foot}{size=\scriptsize}
-
-\mode
-<all>
+\setbeamerfont{title}{size=\Large,%
+                      series=\bfseries}
+\setbeamerfont{author}{size=\small}
+\setbeamerfont{date}{size=\small}
+\setbeamerfont{section title}{size=\Large,%
+                              series=\bfseries}
+\setbeamerfont{block title}{size=\normalsize,%
+                            series=\bfseries}
+\setbeamerfont{block title alerted}{size=\normalsize,%
+                                    series=\bfseries}
+\setbeamerfont{subtitle}{size=\large}
+\setbeamerfont{frametitle}{size=\large,%
+                           series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\normalsize,%
+                           series=\normalfont}
+\setbeamerfont{caption}{size=\small}
+\setbeamerfont{caption name}{series=\bfseries}
+\setbeamerfont{description item}{series=\bfseries}
+\setbeamerfont{footline}{size=\scriptsize}
+\setbeamerfont{bibliography entry author}{size=\normalsize,%
+                                          series=\normalfont}
+\setbeamerfont{bibliography entry title}{size=\normalsize,%
+                                         series=\bfseries}
+\setbeamerfont{bibliography entry location}{size=\normalsize,%
+                                            series=\normalfont}
+\setbeamerfont{bibliography entry note}{size=\small,%
+                                        series=\normalfont}
+\setbeamerfont{standout}{size=\Large,%
+                         series=\bfseries}

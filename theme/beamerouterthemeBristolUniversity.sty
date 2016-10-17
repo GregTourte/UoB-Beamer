@@ -1,276 +1,93 @@
-% Copyright 2009--2011 by Nico Schlömer
-%
-% This file may be distributed and/or modified
-%
-% 1. under the LaTeX Project Public License and/or
-% 2. under the GNU Public License.
-
-% UA page geometry
-% \geometry{paperheight=7.5in,paperwidth=10.0in}
-% ... Hang on! As suggested in the manual, don't mess around with beamer's
-% assumed page dimensions (128mm x 96mm). Fonts, for example, do no get 
-% automatically scaled and will look tiny if the above is executed.
-% Instead, define a multiplier 12.8/(10.0*2.54) = 64/127 and adjust all
-% respective lengths.
-
-
-% ----------------------------------------------------------------------------
-% *** required packages <<<
-% ----------------------------------------------------------------------------
-\RequirePackage{calc}
+\RequirePackage{keyval}
+\RequirePackage{pgfmath}
 \RequirePackage{ifthen}
-% ----------------------------------------------------------------------------
-% *** END required packages >>>
-% ----------------------------------------------------------------------------
 
 \mode<presentation>
 
-% ----------------------------------------------------------------------------
-% *** DEFINE LENGTHS <<<
-% ----------------------------------------------------------------------------
-\newlength{\margin}
-\setlength{\margin}{0.8832cm}% 0.69in* 64/127 *2.54cm/in
+% http://tex.stackexchange.com/questions/140230/why-a-calc-operation-in-width-of-beamercolorbox-doesnt-work
+%\define@key{beamercolbox}{wd}{\pgfmathsetlengthmacro\beamer@colbox@wd{#1}}
+%\define@key{beamercolbox}{ht}{\pgfmathsetlengthmacro\beamer@colbox@ht{#1}}
+%\define@key{beamercolbox}{dp}{\pgfmathsetlengthmacro\beamer@colbox@dp{#1}}
+%\define@key{beamercolbox}{leftskip}{\pgfmathsetlengthmacro\beamer@colbox@leftskip{#1}}
+%\define@key{beamercolbox}{rightskip}{\pgfmathsetlengthmacro\beamer@colbox@rightskip{#1}}
 
-\newlength{\ulogowidth}
-\setlength{\ulogowidth}{1.1136cm}% 0.87in* 64/127 *2.54cm/in
-\newlength{\ulogoheight}
-\setlength{\ulogoheight}{0.90066895151709692cm}% 0.70364761837273193in* 64/127 *2.54cm/in
-\ifbeamer@dark\else%
-  \newlength{\ulogopadding}
-  % padding = distance from the rightmost point of the logo to where the U starts;
-  % value approximately \ulogowidth*0.25
-  \setlength{\ulogopadding}{0.2784cm}
-\fi
-% ----------------------------------------------------------------------------
-% *** END DEFINE LENGTHS >>>
-% ----------------------------------------------------------------------------
-
-
-% ----------------------------------------------------------------------------
-% *** DEFINE IMAGES <<<
-% ----------------------------------------------------------------------------
-\pgfdeclareimage[height=\ulogoheight]{ULogo}{BRIDGE_logo}
-
-% The text logo is a bit of a special case:
-% As given in the PowerPoint(R) slides, the logo is 3.12''x0.36'', the picture file
-% 449px x 52px. However, in the picture file, there is a margin of
-% left: 3px, right: 3px, top: 8px, bottom: 2px.
-% The PDF that we use here does not have any margins, so adapt the sizes here.
-\newlength{\textlogoheight}
-\setlength{\textlogoheight}{0.37218461538461539cm}% 0.36in* 64/127 *2.54cm/in * 42px/52px
-\pgfdeclareimage[height=\textlogoheight]{uTextColor}{University_of_BRISTOL}
-\pgfdeclareimage[height=\ulogoheight]{uLogoWhite}{UoB_Logo_white}
-
-\ifthenelse{ \boolean{beamer@dark} \OR \boolean{beamer@darktitle} }
-% then
-{\pgfdeclareimage[width=\paperwidth]{uaBackgroundDark}{uaBackgroundDarkBlue}}
-%else
-{}
-
-\ifbeamer@dark%
-  \pgfdeclareimage[width=\paperwidth]{uaBackgroundLight}{uaBackgroundLightBlue}
-\else%
-  \newlength{\wavewidth}
-  \setlength{\wavewidth}{11.6352cm}% 9.09in* 64/127 *2.54cm/in
-  \newlength{\waveheight}
-  \setlength{\waveheight}{0.7936cm}% 0.62in* 64/127 *2.54cm/in
-  \pgfdeclareimage[width=\wavewidth,height=\waveheight]{uWave}{uabottomwave}
-\fi
-% ----------------------------------------------------------------------------
-% *** END DEFINE IMAGES <<<
-% ----------------------------------------------------------------------------
-
-\setbeamertemplate{navigation symbols}{}
-
-% ----------------------------------------------------------------------------
-% *** HEADLINE <<<
-% ----------------------------------------------------------------------------
-\ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }{%
-  \defbeamertemplate*{headline}{uob theme}%
-  {
-    % page number
-    \ifbeamer@framenumber%
-      \ifnum\c@framenumber=1\else
-       \pgftext[right,top,at=\pgfpoint{\paperwidth-\margin}{-0.04\paperheight}]{%
-          \usebeamerfont{frame number in head}%
-          \usebeamercolor[fg]{frame number in head}%
-          \insertframenumber{}%
-          \ifbeamer@totalframenumber%
-            /\inserttotalframenumber%
-          \fi
-        }%
+% Frame title
+\defbeamertemplate*{frametitle}{texsx}[1][]
+{
+\vskip7mm%
+  \begin{beamercolorbox}[leftskip=7mm,wd={\paperwidth},ht=10mm]{frametitle} 
+  \begin{tikzpicture}[
+      title/.style={
+        inner xsep=0,
+        inner ysep=1pt,
+        outer sep=0,
+        align=right,
+      },
+    ]
+    \useasboundingbox[fill=none] (0,0) rectangle ++(\dimexpr\paperwidth-14mm\relax,1);
+     \ifx\insertframesubtitle\@empty{
+     	\node[title, anchor=east, mainblue,font=\usebeamerfont{frametitle}, text width=\dimexpr\the\paperwidth-14mm-20mm\relax] at (current bounding box.east) {\vphantom{Ag}\insertframetitle\vphantom{Ag}};}
+      \else%
+      {\node[title, anchor= north east, mainblue,font=\usebeamerfont{frametitle}] at (current bounding box.north east){\vphantom{Ag}\insertframetitle\vphantom{Ag}};%
+       \node[title, anchor= south east, mainblue,font=\usebeamerfont{framesubtitle}] at (current bounding box.south east){\vphantom{Ag}\insertframesubtitle\vphantom{Ag}};}%
       \fi
-    \fi%
-  }%
-}{
-  \newlength{\logotopmargin}%
-  \setlength{\logotopmargin}{0.704cm}%  0.55in* 64/127 *2.54cm/in
-  \defbeamertemplate*{headline}{uob theme}%
-  {%
-    % TODO Don't \vskip if the title is too long!
-    \vskip\logotopmargin%
-    \hskip\margin%
-    \ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }
+  \end{tikzpicture}
+  \end{beamercolorbox}
+}
+
+\defbeamertemplate*{headline}{texsx}{
+\begin{tikzpicture}[overlay]
+\ifthenelse{ \c@framenumber=1 }
     {%
-    %  \vskip5cm% TODO: get rid of this quirk
-      \pgfuseimage{uLogoWhite}%
+\node[inner sep=0, outer sep=0, anchor=north west] at (7mm,-7mm) {\includegraphics[height=10mm]{UoB_Logo_white}};
+\node[inner sep=0, outer sep=0, anchor=south east] at (\the\paperwidth-7mm,-\the\paperheight+7mm) {\includegraphics[height=10mm]{BRIDGE_logo}};
     }
     {%
-      \pgfuseimage{ULogo}%
+\node[inner sep=0, outer sep=0, anchor=north west] at (7mm,-7mm) {\includegraphics[height=10mm]{BRIDGE_logo}};
     }
-  }
+\end{tikzpicture}
 }
-% ----------------------------------------------------------------------------
-% *** END HEADLINE <<<
-% ----------------------------------------------------------------------------
-
-
-
-% ----------------------------------------------------------------------------
-% *** FRAMETITLE <<<
-% ----------------------------------------------------------------------------
-\newlength\frametitletopmargin
-\ifbeamer@compress%
-  \setlength{\frametitletopmargin}{0.384cm}% 0.3in* 64/127 *2.54cm/in
-\else
-  \setlength{\frametitletopmargin}{0.9472cm}% 0.74in* 64/127 *2.54cm/in
-\fi
-
-\ifbeamer@dark\else%
-  \newlength{\frametitlewidth}
-  \setlength{\frametitlewidth}{\textwidth-2.5\ulogoheight-\ulogopadding}
-\fi
-
-\defbeamertemplate*{frametitle}{uob theme}
-{%
-  \ifbeamer@dark%
-    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    \vskip\frametitletopmargin%
-    \raggedleft\insertframetitle\par%
-    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  \else%
-    \ifbeamer@compress%
-      \nointerlineskip%
-      \vskip-\ulogoheight%
-      \vbox to \ulogoheight{%
-        \vfil%
-        \leftskip=2\ulogowidth%
-        \advance\leftskip by\ulogopadding%
-        % TODO To date (July 4, 2010), the beamer class cannot deal with actual
-        %      variables as arguments to "right". Hence, use the literal.
-        \begin{beamercolorbox}[right=1.81cm]{frame title}%
-        \hfill\insertframetitle\par%
-        \end{beamercolorbox}%
-        \vfil%
-      }%
-    \else%
-      \medskip%
-      \begin{beamercolorbox}[right]{frame title}%
-        \insertframetitle\par%
-      \end{beamercolorbox}%
-    \fi%
-  \fi%
-}
-% ----------------------------------------------------------------------------
-% *** END FRAMETITLE >>>
-% ----------------------------------------------------------------------------
-
-
-
-% ----------------------------------------------------------------------------
-% *** FOOTLINE <<<
-% ----------------------------------------------------------------------------
-% See the discussion above for the margin (pixel) quirks.
-\newlength{\textlogobottommarginDark}
-% actual bottom margin in the PowerPoint(R) theme: 7.5'' - 6.83'' - 0.36'' + 0.36'' * 2px/52px
-\setlength{\textlogobottommarginDark}{0.41452307692307688cm}% (7.5'' - 6.83'' - 0.36'' + 0.36'' * 2px/52px)* 64/127 *2.54cm/in
-\newcommand\uTextColorPosDark {\pgfpoint{\margin}{\textlogobottommarginDark}}
-
-\newlength{\textlogobottommarginLight}
-% actual bottom margin in the PowerPoint(R) theme: 7.5'' - 6.80'' - 0.36'' + 0.36'' * 2px/52px
-\setlength{\textlogobottommarginLight}{0.45292307692307715cm}% (7.5''-6.80''-0.36''+0.36''*2px/52px)* 64/127 *2.54cm/in
-\newcommand\uTextColorPosLight{\pgfpoint{\margin}{\textlogobottommarginLight}}
-
-\newlength{\logorightmargin}%
-\setlength{\logorightmargin}{12.1344cm}% 9.48in* 64/127 *2.54cm/in
-\newlength{\logobottommargin}%
-\setlength{\logobottommargin}{0.512cm}% 0.4in* 64/127 *2.54cm/in
-\newcommand\posUlogoFoot{\pgfpoint{\logorightmargin}{\logobottommargin}}
-
-\newcommand{\uWavePos}{\pgfpoint{\paperwidth}{0cm}}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\defbeamertemplate*{footline}{uob theme dark}
+\defbeamertemplate*{footline}{texsx}
 {%
-  \ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }
-  % *** THEN *** dark footline
-  {%
-    %\pgftext[left,bottom,at=\uTextColorPosDark]{\pgfuseimage{uTextColor}}%
-    \pgftext[right,bottom,at=\posUlogoFoot]{\pgfuseimage{ULogo}}%
-  }
-  % *** ELSE *** light footline
-  {%
-     % conditionally put the ua text logo on the page
-    \ifthenelse{\c@framenumber=1 \OR \NOT \boolean{beamer@compress}}
-    {\pgftext[left,bottom,at=\uTextColorPosLight]{\pgfuseimage{uTextColor}}}%
-    {}%
+\begin{tikzpicture}
+    \useasboundingbox[fill=none, anchor=south west, ] (0,0) rectangle (\the\paperwidth,11mm);
 
-    % bottom wave
-    \pgftext[right,bottom,at=\uWavePos]{\pgfuseimage{uWave}}%
+\ifnum\c@framenumber>1%
+\ifbeamer@framenumber
+	\node[anchor=east, inner xsep=7mm, inner ysep= 0, outer sep=0, color=footline.fg, font=\usebeamerfont{frame number in foot}] at (current bounding box.east) {\vphantom{Ag}\insertframenumber{}\ifbeamer@totalframenumber\slash \inserttotalframenumber{}\fi};
+    \fi
+    \fi
+    
+%  {%
+%   % \pgftext[right,bottom,at=\posUlogoFoot]{\pgfuseimage{ULogo}}%
+%  }
+%  % *** ELSE *** light footline
+%  {%
+%     % conditionally put the ua text logo on the page
+%    \ifthenelse{\c@framenumber=1 \OR \NOT \boolean{beamer@compress}}
+%    {\pgftext[left,bottom,at=\uTextColorPosLight]{\pgfuseimage{uTextColor}}}%
+%    {}%
 
-    % page number
-    \ifbeamer@framenumber%
-      \ifnum\c@framenumber=1\else
-        \pgftext[right,bottom,at=\pgfpoint{0.98\paperwidth}{0.02\paperwidth}]{%
-          \usebeamerfont{frame number in foot}%
-          \usebeamercolor[fg]{frame number in foot}\insertframenumber{}%
-          \ifbeamer@totalframenumber%
-            /\inserttotalframenumber%
-          \fi
-        }%
-      \fi
-    \fi%
-    }
+%    % bottom wave
+%    \pgftext[right,bottom,at=\uWavePos]{\pgfuseimage{uWave}}%
+
+%    % page number
+%    \ifbeamer@framenumber%
+%      \ifnum\c@framenumber=1\else
+%        \pgftext[right,bottom,at=\pgfpoint{0.98\paperwidth}{0.02\paperwidth}]{%
+%          \usebeamerfont{frame number in foot}%
+%          \usebeamercolor[fg]{frame number in foot}\insertframenumber{}%
+%          \ifbeamer@totalframenumber%
+%            /\inserttotalframenumber%
+%          \fi
+%        }%
+%      \fi
+%    \fi%
+%    }
+    \end{tikzpicture}
 }%
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-% ----------------------------------------------------------------------------
-% *** END of FOOTLINE >>>
-% ---------------------------------------------------------------------------- 
-
-
-% ----------------------------------------------------------------------------
-% *** MARGINS <<<
-% ----------------------------------------------------------------------------
-% set left and right text margins
-\setbeamersize{text margin left=\margin,%
-               text margin right=\margin}
-% ----------------------------------------------------------------------------
-% *** END MARGINS >>>
-% ----------------------------------------------------------------------------
-
-
-
-% ----------------------------------------------------------------------------
-% *** BACKGROUND <<<
-% ----------------------------------------------------------------------------
-\defbeamertemplate*{background canvas}{uob theme}
-{%
-  \ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }
-  % *** THEN ***
-  {%
-    \ifnum\c@framenumber=1%
-      \pgfuseimage{uaBackgroundDark}
-    \else%
-      \pgfuseimage{uaBackgroundLight}%
-    \fi%
-  }
-  % *** ELSE ***
-  {}
-}
-% ----------------------------------------------------------------------------
-% *** END BACKGROUND <<<
-% ----------------------------------------------------------------------------
-
-\mode
-<all>
+\mode<all>

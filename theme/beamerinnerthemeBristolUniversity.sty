@@ -1,43 +1,59 @@
-% Copyright 2009 by Nico Schlömer
-%
-% This file may be distributed and/or modified
-%
-% 1. under the LaTeX Project Public License and/or
-% 2. under the GNU Public License.
+
+% ----------------------------------------------------------------------------
+% *** required packages <<<
+% ----------------------------------------------------------------------------
+\RequirePackage{calc}
+\RequirePackage{ifthen}
+% ----------------------------------------------------------------------------
+% *** END required packages >>>
+% ----------------------------------------------------------------------------
 
 \mode<presentation>
 
-% ----------------------------------------------------------------------------
-% *** TITLE PAGE <<<
-% ----------------------------------------------------------------------------
-\defbeamertemplate*{title page}{uob theme}
-{
-  \raggedleft\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par%
-  \ifx\insertsubtitle\@empty%
-  \else%
-    \vskip2ex%
-    {\raggedright\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
-  \fi%
-  \ifx\insertauthor\@empty%
-  \else%
-    \vskip2ex%
-    {\raggedright\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
-  \fi%
-  \vfill%
+\newlength{\myhoffset}
+\newlength{\myvoffset}
+\setlength{\myhoffset}{.4\paperwidth}
+\setlength{\myvoffset}{.25\paperheight}
+%\def\thevoffset{\the\paperheight/4}
+
+%\pgfmathsetlength{\myhoffset}{\the\paperwidth*0.25}
+%\pgfmathsetlength{\myvoffset}{\the\paperheight / 4}
+
+\defbeamertemplate*{background}{texsx}{
+  \begin{tikzpicture}
+  \useasboundingbox[fill=none] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+  
+\ifnum\thepage=1\relax%
+  	\fill[fill=structure.fg] (0,2) 
+    .. controls (\myhoffset,\myvoffset-20mm) and (\the\paperwidth-\myhoffset,\myvoffset+20mm) .. 
+    (\the\paperwidth,3) 
+    -- (\the\paperwidth,\the\paperheight) 
+    -- (0,\the\paperheight) -- cycle;
+  
+\draw[color=structure.fg!80,line width=5mm,line cap=rect] (0,2) .. controls (\myhoffset,\myvoffset-20mm) and (\the\paperwidth-\myhoffset,\myvoffset+20mm) .. (\the\paperwidth,3);
+    \fi
+  \ifnum\thepage>1\relax%
+   \fill[fill=structure.fg] (0,0) .. controls (.5\paperwidth,0) and (\the\paperwidth-\myhoffset,15mm) .. (\the\paperwidth, 10mm) -- (\the\paperwidth,0) -- cycle;
+   \fi
+  \end{tikzpicture}
 }
-% ----------------------------------------------------------------------------
-% *** END TITLE PAGE >>>
-% ----------------------------------------------------------------------------
 
+% http://tex.stackexchange.com/questions/110925/how-to-customize-title-page-in-beamer-so-that-it-looks-like
+\defbeamertemplate*{title page}{texsx}{
+\begin{tikzpicture}%[shift=(current page.south west)]%
+[overlay, remember picture]
 
-% ----------------------------------------------------------------------------
-% *** BLOCKS <<<
-% ----------------------------------------------------------------------------
-\setbeamertemplate{blocks}[rounded]
-% ----------------------------------------------------------------------------
-% *** END BLOCKS >>>
-% ----------------------------------------------------------------------------
+\usebeamercolor{titlelike}
 
+\node[anchor=east, inner xsep=0, outer sep=0, inner ysep=0mm, align=right, font=\usebeamerfont{title}, color=fg] at ([xshift=-7mm,yshift=-30mm]current page.north east) (title) {\vphantom{Ag}\inserttitle\vphantom{Ag}};
+\node[anchor=north east, inner xsep=0, outer sep=0, inner ysep=0mm, align=right, font=\usebeamerfont{subtitle}, color=white] at ([yshift=-1em]title.south east) (subtitle) {\vphantom{Ag}\insertsubtitle\vphantom{Ag}};
 
-\mode
-<all>
+\node[anchor=south west, inner sep=0, font=\usebeamerfont{date}, color=fg] at ([xshift=7mm, yshift=25mm]current page.south west) (date) {\ifx\insertdate\@empty{}\else{\vphantom{Ag}\insertdate\vphantom{Ag}}\fi};
+
+\node[anchor=south west, inner sep=0, font=\usebeamerfont{institute}, color=fg] at ([yshift=1em]date.north west) (institute) {\ifx\insertinstitute\@empty{}\else{\vphantom{Ag}\insertinstitute\vphantom{Ag}}\fi};
+
+\node[anchor=south west, inner sep=0, font=\usebeamerfont{author}, color=fg] at ([yshift=1em]institute.north west) (author) {\ifx\insertauthor\@empty{}\else{\vphantom{Ag}\insertauthor\vphantom{Ag}}\fi};
+\end{tikzpicture}
+}
+
+\mode<all>

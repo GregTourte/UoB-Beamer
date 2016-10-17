@@ -1,22 +1,10 @@
-% Copyright 2009--2011 by Nico Schlömer
-%
-% This file may be distributed and/or modified
-%
-% 1. under the LaTeX Project Public License and/or
-% 2. under the GNU Public License.
+\mode<presentation>
 
+% http://tex.stackexchange.com/questions/146529/design-a-custom-beamer-theme-from-scratch/146682#146682
 
-% -------------------------------------------------------------------------
-% introduce options
-\DeclareOptionBeamer{compress}{\beamer@compresstrue}
-
-\newif\ifbeamer@dark
-\beamer@darkfalse
-\DeclareOptionBeamer{dark}{\beamer@darktrue}
-
-\newif\ifbeamer@darktitle
-\beamer@darktitlefalse
-\DeclareOptionBeamer{darktitle}{\beamer@darktitletrue}
+% Requirement
+\RequirePackage{tikz}
+\usetikzlibrary{calc,positioning, backgrounds, intersections, fit}
 
 \newif\ifbeamer@framenumber
 \beamer@framenumberfalse
@@ -27,14 +15,16 @@
 \DeclareOptionBeamer{totalframenumber}{\beamer@totalframenumbertrue}
 
 \ProcessOptionsBeamer
-% -------------------------------------------------------------------------
 
-\mode<presentation>
 
-\useinnertheme{BristolUniversity}
-\usefonttheme {BristolUniversity}
+% Settings
 \usecolortheme{BristolUniversity}
+\usefonttheme{BristolUniversity}
+\useinnertheme{BristolUniversity}
 \useoutertheme{BristolUniversity}
 
-\mode
-<all>
+\setbeamersize{text margin left=7mm,text margin right=7mm} 
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true]  
+
+\mode<all>
